@@ -280,8 +280,7 @@ VAR GLOBAL isMLOADX
 ; @out A => value
 ; @out E => new offset
 MLOADX:
-    32 - C          :JMPN(errorMLOADMSTORE) ; TDDO Should be unreachable! check it
-    32 - C - 1      :JMPN(MLOAD32)
+    32 - C          :JMPZ(MLOAD32)
     1               :MSTORE(isMLOADX)
 
 ; @info get value from memory (32 bytes)
