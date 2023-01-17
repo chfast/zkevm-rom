@@ -206,6 +206,7 @@ opAuxPUSHBcreate:
     %MAX_CNT_BINARY - CNT_BINARY - 225 :JMPN(outOfCountersBinary)
     %MAX_CNT_MEM_ALIGN - CNT_MEM_ALIGN - 2 :JMPN(outOfCountersMemalign)
 
+    ; A == 1
     ; get pushed bytes from previous context memory
     0 => B
     $ => CTX                        :MLOAD(originCTX)
@@ -213,7 +214,7 @@ opAuxPUSHBcreate:
     $ => E                          :MLOAD(argsOffsetCall)
     ; increase current program counter (PC) to offset for getting pushed bytes to read
     E + PC => E
-    ; set length to read to C for MOLADX call
+    ; set length to read to C for MLOADX call
     D => C                          :CALL(MLOADX); in: [E: offset, C: length] out: [A: value, E: new offset]
     ; increase to PC the length of the read bytes
     PC + C => PC
