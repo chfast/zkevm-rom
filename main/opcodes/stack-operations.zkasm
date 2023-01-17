@@ -10,8 +10,7 @@
 opPUSH1:
     ; number of bytes to push to D
     1 => D
-    ; check is a deploy
-    ; if is a deploy, get bytes from memory else, get bytes from stack
+    ; check if it is a create transaction or instruction (B) or a regular call (A)
     $ => B                          :MLOAD(isCreateContract), JMPNZ(opAuxPUSHB, opAuxPUSHA)
 
 opPUSH2:
@@ -165,12 +164,10 @@ opAuxPUSHB:
     ; checks zk-counters
     %MAX_CNT_BINARY - CNT_BINARY - 6 :JMPN(outOfCountersBinary)
     %MAX_CNT_STEPS - STEP - 400 :JMPN(outOfCountersStep)
-    ; check is a create/create2
-    $ => A                          :MLOAD(isCreate)
-    0 - A                           :JMPN(opAuxPUSHBcreate)
+    ; check is create or create2
+    $ => A                          :MLOAD(isCreate), JMPNZ(opAuxPUSHBcreate)
     ; set bytes length to read to C
     D - 1 => C
-    0 => A
 
 opAuxPUSHBloop:
     ; checks zk-counters

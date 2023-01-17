@@ -217,7 +217,7 @@ getContractAddress:
         $ => C                          :MLOAD(lengthNonce)
         ; 1 byte length address + 20 bytes address + 1 byte length nonce + C bytes nonce
         0xc0 + 22 + C                   :HASHK1(E)
-        0x94                            :HASHK1(E)
+        0x94                            :HASHK1(E) ; 0x80+20
         20 => D
         $ => B                          :MLOAD(txSrcAddr)
         B                               :HASHK(E)
@@ -229,7 +229,7 @@ nonce1byte:
         $ => A                          :MLOAD(txSrcAddr)
         $ => B                          :MLOAD(txNonce)
         0xc0 + 22                       :HASHK1(E)
-        0x94                            :HASHK1(E)
+        0x94                            :HASHK1(E) ; 0x80+20
         20 => D
         A                               :HASHK(E)
         B                               :JMPZ(nonceIs0)
