@@ -135,15 +135,13 @@ opSDIV:
     B => C
     $ => A          :MLOAD(SP), CALL(abs); [b => A]; in: [A: number] out: [A: |A|, B: Sign of A [1 if negative, 0 positive]]
     ; if is neg (different signs => C != B), jump to sdivneg
-    C - B           :JMPNZ(opSDIVNeg)
     E               :MSTORE(arithA)
     A               :MSTORE(arithB), CALL(divARITH); in: [arithA, arithB] out: [arithRes1: arithA/arithB, arithRes2: arithA%arithB]
+    C - B           :JMPNZ(opSDIVNeg)
     $ => B          :MLOAD(arithRes1)
     B               :MSTORE(SP++), JMP(readCode); [a / b(B) => SP]
 
 opSDIVNeg:
-    E               :MSTORE(arithA)
-    A               :MSTORE(arithB), CALL(divARITH); in: [arithA, arithB] out: [arithRes1: arithA/arithB, arithRes2: arithA%arithB]
     $ => B          :MLOAD(arithRes1)
     0 => A
     $ => A          :SUB; A - B => A
